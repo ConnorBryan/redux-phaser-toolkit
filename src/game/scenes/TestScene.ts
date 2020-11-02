@@ -4,10 +4,12 @@ import { PlayerEntity, StageEntity } from "../entities";
 import BaseScene from "./BaseScene";
 
 export default class TestScene extends BaseScene {
+  cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
   stages: StageEntity[] = [];
   stageIds: Record<string, true> = {};
   players: PlayerEntity[] = [];
   playerIds: Record<string, true> = {};
+  playerOne!: PlayerEntity;
 
   constructor() {
     super({
@@ -20,28 +22,21 @@ export default class TestScene extends BaseScene {
   }
 
   create() {
+    this.cursors = this.input.keyboard.createCursorKeys();
     this.createBackground();
     this.store.dispatch(actions.gameStarted());
-  }
 
-  update() {
-    // Stages
+    // Add new stages.
     stageSelectors.selectAll(this.currentState).forEach((stage) => {
       if (!this.stageIds[stage.id]) {
         this.stageIds[stage.id] = true;
-        this.stages.push(new StageEntity(this, stage.id));
+        const stageEntity = new StageEntity(this, stage.id);
+        this.stages.push(stageEntity);
+        this.physics.add.collider(stageEntity, this.players);
       }
     });
 
-    Object.keys(this.stageIds).forEach((id) => {
-      if (!stageSelectors.selectById(this.currentState, id)) {
-        this.stages.find((stage) => stage.id === id)?.destroy();
-        delete this.stageIds[id];
-        this.stages = this.stages.filter((stage) => stage.id !== id);
-      }
-    });
-
-    // Players
+    // Add new players.
     playerSelectors.selectAll(this.currentState).forEach((player) => {
       if (!this.playerIds[player.id]) {
         this.playerIds[player.id] = true;
@@ -51,6 +46,23 @@ export default class TestScene extends BaseScene {
       }
     });
 
+    this.playerOne = this.players[0];
+  }
+
+  update() {
+    // Remove outdated stages.
+    Object.keys(this.stageIds).forEach((id) => {
+      if (!stageSelectors.selectById(this.currentState, id)) {
+        this.stages.find((stage) => stage.id === id)?.destroy();
+        delete this.stageIds[id];
+        this.stages = this.stages.filter((stage) => stage.id !== id);
+      }
+    });
+
+    // Update existing stages.
+    this.stages.forEach((stage) => stage.update());
+
+    // Remove outdated players.
     Object.keys(this.playerIds).forEach((id) => {
       if (!playerSelectors.selectById(this.currentState, id)) {
         this.players.find((player) => player.id === id)?.destroy();
@@ -58,9 +70,26 @@ export default class TestScene extends BaseScene {
         this.players = this.players.filter((player) => player.id !== id);
       }
     });
+
+    // Update existing players.
+    this.players.forEach((player) => player.update());
+
+    this.listenForInput();
   }
 
   createBackground() {
     this.add.image(0, 0, IMAGE_KEYS.Background).setOrigin(0, 0);
+  }
+
+  listenForInput() {
+    const { left, right } = this.cursors;
+
+    if (left?.isDown) {
+      this.playerOne.move("left");
+    } else if (right?.isDown) {
+      this.playerOne.move("right");
+    } else {
+      this.playerOne.stop();
+    }
   }
 }

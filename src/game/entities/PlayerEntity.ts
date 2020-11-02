@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import { ENTITY_KEYS } from "keys";
 import BaseEntity from "./BaseEntity";
-import { playerSelectors } from "store";
+import { playerSelectors, playerSlice } from "store";
 
 export default class PlayerEntity extends BaseEntity<Geodancer.Entity> {
   rectangle!: Phaser.GameObjects.GameObject;
@@ -18,7 +18,7 @@ export default class PlayerEntity extends BaseEntity<Geodancer.Entity> {
       scale: { width, height },
       position: { x, y },
       color,
-    } = playerSelectors.selectById(this.gameState, id)!;
+    } = this.getState();
 
     this.rectangle = this.scene.add.rectangle(x, y, width, height, color);
 
@@ -27,8 +27,58 @@ export default class PlayerEntity extends BaseEntity<Geodancer.Entity> {
     this.body = this.rectangle.body as Phaser.Physics.Arcade.Body;
   }
 
+  getState() {
+    return playerSelectors.selectById(this.gameState, this.id)!;
+  }
+
+  getBody() {
+    return this.rectangle.body as Phaser.Physics.Arcade.Body;
+  }
+
+  update() {
+    const {
+      movement: {
+        velocity: { x: stateVelocityX },
+      },
+    } = this.getState();
+    const {
+      velocity: { x: bodyVelocityX },
+    } = this.getBody();
+
+    if (stateVelocityX !== bodyVelocityX) {
+      this.getBody().setVelocityX(stateVelocityX);
+    }
+  }
+
   destroy() {
     super.destroy();
     this.rectangle.destroy();
+  }
+
+  //
+
+  move(direction: Geodancer.Direction) {
+    const {
+      movement: {
+        velocity: { x: stateVelocityX },
+      },
+    } = this.getState();
+
+    if (stateVelocityX === 0) {
+      this.store.dispatch(
+        playerSlice.actions.playerMoved({
+          id: this.id,
+          direction,
+        })
+      );
+    }
+  }
+
+  stop() {
+    const { movement } = this.getState();
+
+    if (movement.direction) {
+      this.store.dispatch(playerSlice.actions.playerStopped(this.id));
+    }
   }
 }
