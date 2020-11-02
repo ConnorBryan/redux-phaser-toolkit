@@ -17,6 +17,7 @@ export const REDUCER_KEYS = {
 
 export const ACTION_KEYS = {
   DebugMenuUpdated: "debugMenuUpdated",
+  GameStarted: "gameStarted",
 };
 
 export const EVENT_KEYS = {};

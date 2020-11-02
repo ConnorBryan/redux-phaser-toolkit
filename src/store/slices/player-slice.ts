@@ -1,36 +1,37 @@
-import { createSelector, createSlice } from "@reduxjs/toolkit";
-import { RootState } from "store";
+import Phaser from "phaser";
+import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
+import { gameStarted } from "../actions";
+import { RootState } from "../create-store";
 import { COLOR_KEYS, ENTITY_KEYS } from "keys";
+import { INITIAL_PLAYER_EXTRA_LIVES } from "config";
+
+const playerAdapter = createEntityAdapter<Geodancer.Player>();
 
 export default createSlice({
   name: ENTITY_KEYS.Player,
-  initialState: {
-    scale: {
-      width: 15,
-      height: 55,
-    },
-    position: {
-      x: 404,
-      y: 425,
-    },
-    color: COLOR_KEYS.Black,
-  },
+  initialState: playerAdapter.getInitialState(),
   reducers: {},
+  extraReducers: (builder) =>
+    builder.addCase(gameStarted.type, (state) => {
+      playerAdapter.addOne(state, {
+        id: Phaser.Math.RND.uuid(),
+        lives: INITIAL_PLAYER_EXTRA_LIVES,
+        scale: {
+          width: 15,
+          height: 55,
+        },
+        position: {
+          x: 404,
+          y: 425,
+        },
+        color: COLOR_KEYS.Black,
+      });
+    }),
 });
 
-export const getPlayer = (state: RootState) => state.player;
-
-export const getPlayerScale = createSelector(
-  getPlayer,
-  (player) => player.scale
+export const playerSelectors = playerAdapter.getSelectors(
+  (state: RootState) => state.player
 );
 
-export const getPlayerPosition = createSelector(
-  getPlayer,
-  (player) => player.position
-);
-
-export const getPlayerColor = createSelector(
-  getPlayer,
-  (player) => player.color
-);
+export const getPlayer = (state: RootState, id: string) =>
+  playerSelectors.selectById(state, id);

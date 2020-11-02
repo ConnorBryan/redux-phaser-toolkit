@@ -1,40 +1,35 @@
 import Phaser from "phaser";
 import { EntitySelectors } from "@reduxjs/toolkit";
-import { ConfiguredStore, RootState, selectors } from "store";
 import { SYSTEM_KEYS } from "keys";
+import { ConfiguredStore, RootState } from "store";
 import { StorePlugin } from "game/plugins";
 
+interface EntityConfig<T> {
+  scene: Phaser.Scene;
+  key: string;
+  id: string;
+  selectors?: EntitySelectors<T, RootState>;
+}
+
 export default class BaseEntity<T> extends Phaser.GameObjects.GameObject {
-  reducerKey: keyof RootState;
+  kind: string;
   id: string;
   store!: ConfiguredStore;
+  selectors?: EntitySelectors<T, RootState>;
 
-  constructor(
-    scene: Phaser.Scene,
-    key: string,
-    reducerKey: keyof RootState,
-    id: string
-  ) {
+  constructor({ scene, key, id, selectors }: EntityConfig<T>) {
     super(scene, key);
+    const { store } = scene.plugins.get(SYSTEM_KEYS.Store) as StorePlugin;
 
-    this.reducerKey = reducerKey;
+    this.kind = key;
     this.id = id;
-  }
-
-  get currentState() {
-    return this.store.getState();
-  }
-
-  init() {
-    const { store } = this.scene.plugins.get(SYSTEM_KEYS.Store) as StorePlugin;
-
     this.store = store;
+    this.selectors = selectors;
   }
 
   getOwnData() {
-    return ((selectors as any)[this.reducerKey] as EntitySelectors<
-      T,
-      RootState
-    >).selectById(this.currentState, this.id);
+    const data = this.selectors?.selectById(this.store.getState(), this.id);
+
+    console.log(`Data for ${this.kind}#${this.id}`, data);
   }
 }

@@ -8,3 +8,5 @@ export const debugMenuUpdated = createAction(
     value,
   })
 );
+
+export const gameStarted = createAction(ACTION_KEYS.GameStarted);
