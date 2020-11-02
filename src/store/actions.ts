@@ -3,8 +3,8 @@ import { ACTION_KEYS } from "keys";
 
 export const debugMenuUpdated = createAction(
   ACTION_KEYS.DebugMenuUpdated,
-  (settingsKey: string, key: string, value: string | number) => ({
-    payload: { settingsKey, key, value },
+  (path: string, value: any) => ({
+    payload: { path, value },
     value,
   })
 );

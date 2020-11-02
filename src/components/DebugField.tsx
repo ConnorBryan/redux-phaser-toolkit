@@ -1,17 +1,18 @@
+import { OutputSelector } from "@reduxjs/toolkit";
 import React from "react";
-import { useDispatch } from "react-redux";
-import { actions } from "store";
+import { useDispatch, useSelector } from "react-redux";
+import { actions, RootState } from "store";
 
 interface Props {
   label: string;
   type: "text" | "number";
-  settingsKey: string;
   settingKey: string;
-  value: string;
+  selector: OutputSelector<RootState, any, any>;
 }
 
 export default function DebugField(props: Props) {
   const dispatch = useDispatch();
+  const value = useSelector(props.selector);
 
   return (
     <>
@@ -20,10 +21,10 @@ export default function DebugField(props: Props) {
       <input
         name={props.settingKey}
         type={props.type}
-        value={props.value}
-        onChange={({ target: { value } }) =>
+        value={value}
+        onChange={(event) =>
           dispatch(
-            actions.debugMenuUpdated(props.settingsKey, props.settingKey, value)
+            actions.debugMenuUpdated(props.settingKey, event.target.value)
           )
         }
       />
