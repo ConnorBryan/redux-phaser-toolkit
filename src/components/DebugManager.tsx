@@ -1,5 +1,5 @@
 import React from "react";
-import { selectors } from "store";
+import { getMainStageWidth, getMainStageHeight } from "store";
 import Panel from "./Panel";
 import DebugField from "./DebugField";
 
@@ -10,7 +10,7 @@ export default function DebugManager() {
         label="Stage Width"
         type="number"
         settingKey="stage.width"
-        selector={selectors.getStageWidth}
+        selector={getMainStageWidth as any}
         min="0"
         max="1"
         step="0.1"
@@ -19,7 +19,7 @@ export default function DebugManager() {
         label="Stage Height"
         type="number"
         settingKey="stage.height"
-        selector={selectors.getStageHeight}
+        selector={getMainStageHeight as any}
         min="0"
         max="1"
         step="0.1"

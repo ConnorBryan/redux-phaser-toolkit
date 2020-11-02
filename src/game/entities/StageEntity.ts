@@ -1,20 +1,26 @@
 import Phaser from "phaser";
-import { COLOR_KEYS, ENTITY_KEYS } from "keys";
-import { selectors } from "store";
+import { ENTITY_KEYS } from "keys";
+import { stageSelectors } from "store";
 import BaseEntity from "./BaseEntity";
 
 export default class StageEntity extends BaseEntity<Geodancer.Entity> {
-  constructor(scene: Phaser.Scene) {
+  constructor(scene: Phaser.Scene, id: string) {
     super({
       scene,
       key: ENTITY_KEYS.Stage,
-      id: "b",
+      id,
+      selectors: stageSelectors,
     });
 
-    const { width, height } = selectors.getStageScale(this.store.getState());
+    const {
+      scale: { width, height },
+      position: { y },
+      color,
+    } = stageSelectors.selectById(this.store.getState(), id)!;
+
     const leftPadding = (this.scene.scale.width - width) / 2;
     const rectangle = this.scene.add
-      .rectangle(leftPadding, 521, width, height, COLOR_KEYS.Black)
+      .rectangle(leftPadding, y, width, height, color)
       .setOrigin(0, 0);
 
     this.scene.physics.add.existing(rectangle);

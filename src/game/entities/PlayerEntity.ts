@@ -23,7 +23,5 @@ export default class PlayerEntity extends BaseEntity<Geodancer.Entity> {
     this.scene.physics.add.existing(rectangle);
 
     this.body = rectangle.body as Phaser.Physics.Arcade.Body;
-
-    this.body.setAllowGravity(false);
   }
 }

@@ -7,6 +7,7 @@ declare namespace Geodancer {
 
   interface Entity {
     id: string;
+    color: number;
     scale: {
       width: number;
       height: number;
@@ -19,6 +20,5 @@ declare namespace Geodancer {
 
   interface Player extends Entity {
     lives: number;
-    color: number;
   }
 }

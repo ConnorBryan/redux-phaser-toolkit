@@ -1,5 +1,5 @@
 import { IMAGE_KEYS, SCENE_KEYS } from "keys";
-import { actions, playerSelectors } from "store";
+import { actions, playerSelectors, stageSelectors } from "store";
 import { PlayerEntity, StageEntity } from "../entities";
 import BaseScene from "./BaseScene";
 
@@ -25,10 +25,19 @@ export default class TestScene extends BaseScene {
   }
 
   update() {
+    stageSelectors.selectAll(this.currentState).forEach((stage) => {
+      if (!this.stageIds[stage.id]) {
+        this.stageIds[stage.id] = true;
+        this.stages.push(new StageEntity(this, stage.id));
+      }
+    });
+
     playerSelectors.selectAll(this.currentState).forEach((player) => {
       if (!this.playerIds[player.id]) {
         this.playerIds[player.id] = true;
-        this.players.push(new PlayerEntity(this, player.id));
+        const playerEntity = new PlayerEntity(this, player.id);
+        this.players.push(playerEntity);
+        this.physics.add.collider(playerEntity, this.stages);
       }
     });
   }
