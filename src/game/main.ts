@@ -1,5 +1,11 @@
 import Phaser from "phaser";
-import { DEBUG_ENABLED, SYSTEM_KEYS } from "keys";
+import {
+  CANVAS_WIDTH,
+  CANVAS_HEIGHT,
+  DEBUG_MODE_ENABLED,
+  GRAVITY,
+} from "config";
+import { SYSTEM_KEYS } from "keys";
 import { ConfiguredStore } from "store";
 import { StorePlugin } from "./plugins";
 import { TestScene } from "./scenes";
@@ -8,13 +14,13 @@ export default function loadGame(parent: HTMLElement, store: ConfiguredStore) {
   return new Phaser.Game({
     parent,
     type: Phaser.AUTO,
-    width: 800,
-    height: 600,
+    width: CANVAS_WIDTH,
+    height: CANVAS_HEIGHT,
     physics: {
       default: "arcade",
       arcade: {
-        gravity: { y: 1000 },
-        debug: DEBUG_ENABLED,
+        gravity: { y: GRAVITY },
+        debug: DEBUG_MODE_ENABLED,
       },
     },
     scene: [TestScene],

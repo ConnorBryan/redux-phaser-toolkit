@@ -1,5 +1,3 @@
-export const DEBUG_ENABLED = true;
-
 export const SYSTEM_KEYS = {
   Store: "store",
 };
@@ -20,7 +18,9 @@ export const ACTION_KEYS = {
 
 export const EVENT_KEYS = {};
 
-export const COLOR_KEYS = {};
+export const COLOR_KEYS = {
+  Black: 0x000000,
+};
 
 export const IMAGE_KEYS = {
   Background: "background",

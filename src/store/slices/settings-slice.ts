@@ -8,7 +8,7 @@ export default createSlice({
   initialState: {
     stage: {
       width: 0.75,
-      height: 0.1,
+      height: 0.05,
     },
   },
   reducers: {},
