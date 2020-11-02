@@ -24,6 +24,8 @@ export const EVENT_KEYS = {};
 
 export const COLOR_KEYS = {
   Black: 0x000000,
+  Red: 0xff0000,
+  Blue: 0x0000ff,
 };
 
 export const IMAGE_KEYS = {

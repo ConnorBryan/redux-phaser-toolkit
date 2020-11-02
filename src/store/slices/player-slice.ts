@@ -44,7 +44,9 @@ export default createSlice({
   extraReducers: (builder) =>
     builder
       .addCase(gameStarted.type, (state) => {
-        playerAdapter.addOne(state, {
+        const createDefaultPlayer = (
+          overrides: Partial<Geodancer.Player> = {}
+        ) => ({
           id: Phaser.Math.RND.uuid(),
           lives: INITIAL_PLAYER_EXTRA_LIVES,
           scale: {
@@ -52,8 +54,8 @@ export default createSlice({
             height: 55,
           },
           position: {
-            x: 404,
-            y: 425,
+            x: 150,
+            y: 500,
           },
           movement: {
             direction: null,
@@ -63,8 +65,20 @@ export default createSlice({
               y: 0,
             },
           },
-          color: COLOR_KEYS.Black,
+          color: COLOR_KEYS.Red,
+          ...overrides,
         });
+
+        playerAdapter.addMany(state, [
+          createDefaultPlayer(),
+          createDefaultPlayer({
+            position: {
+              x: 650,
+              y: 500,
+            },
+            color: COLOR_KEYS.Blue,
+          }),
+        ]);
       })
       .addCase(
         debugMenuUpdated.type,

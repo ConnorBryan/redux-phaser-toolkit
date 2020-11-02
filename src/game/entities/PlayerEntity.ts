@@ -60,11 +60,12 @@ export default class PlayerEntity extends BaseEntity<Geodancer.Entity> {
   move(direction: Geodancer.Direction) {
     const {
       movement: {
+        direction: movementDirection,
         velocity: { x: stateVelocityX },
       },
     } = this.getState();
 
-    if (stateVelocityX === 0) {
+    if (stateVelocityX === 0 || movementDirection !== direction) {
       this.store.dispatch(
         playerSlice.actions.playerMoved({
           id: this.id,
