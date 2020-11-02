@@ -7,6 +7,10 @@ import { StorePlugin } from "game/plugins";
 export default class BaseScene extends Phaser.Scene {
   store!: ConfiguredStore;
 
+  get currentState() {
+    return this.store.getState();
+  }
+
   init() {
     const { store } = this.plugins.get(SYSTEM_KEYS.Store) as StorePlugin;
 

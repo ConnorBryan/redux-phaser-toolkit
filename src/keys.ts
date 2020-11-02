@@ -6,14 +6,16 @@ export const SCENE_KEYS = {
   Test: "test",
 };
 
-export const ENTITY_KEYS = {};
+export const ENTITY_KEYS = {
+  Player: "player",
+};
 
 export const REDUCER_KEYS = {
   Settings: "settings",
 };
 
 export const ACTION_KEYS = {
-  DebugMenuUpdated: "DebugMenuUpdated",
+  DebugMenuUpdated: "debugMenuUpdated",
 };
 
 export const EVENT_KEYS = {};

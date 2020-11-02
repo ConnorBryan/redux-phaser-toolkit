@@ -21,6 +21,10 @@ export default class BaseEntity<T> extends Phaser.GameObjects.GameObject {
     this.id = id;
   }
 
+  get currentState() {
+    return this.store.getState();
+  }
+
   init() {
     const { store } = this.scene.plugins.get(SYSTEM_KEYS.Store) as StorePlugin;
 
@@ -31,6 +35,6 @@ export default class BaseEntity<T> extends Phaser.GameObjects.GameObject {
     return ((selectors as any)[this.reducerKey] as EntitySelectors<
       T,
       RootState
-    >).selectById(this.store.getState(), this.id);
+    >).selectById(this.currentState, this.id);
   }
 }

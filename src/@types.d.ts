@@ -3,4 +3,9 @@ declare namespace Geodancer {
     path: string | string[];
     value: any;
   };
+
+  interface Entity {
+    name: string;
+    lives: number;
+  }
 }

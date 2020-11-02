@@ -1,10 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
-import { settingsSlice } from "./slices";
+import { playerSlice, settingsSlice } from "./slices";
 
 function createStore() {
   return configureStore({
     reducer: combineReducers({
+      player: playerSlice.reducer,
       settings: settingsSlice.reducer,
     }),
   });

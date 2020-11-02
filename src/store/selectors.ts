@@ -2,6 +2,7 @@ import { createSelector } from "@reduxjs/toolkit";
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from "config";
 import { RootState } from "./create-store";
 
+// #region Settings
 export const getSettings = (state: RootState) => state.settings;
 
 export const getStageDimensions = createSelector(
@@ -26,3 +27,23 @@ export const getStageHeight = createSelector(
   getStageDimensions,
   ({ height }) => height
 );
+// #endregion
+
+// #region Player
+export const getPlayer = (state: RootState) => state.player;
+
+export const getPlayerScale = createSelector(
+  getPlayer,
+  (player) => player.scale
+);
+
+export const getPlayerPosition = createSelector(
+  getPlayer,
+  (player) => player.position
+);
+
+export const getPlayerColor = createSelector(
+  getPlayer,
+  (player) => player.color
+);
+// #endregion

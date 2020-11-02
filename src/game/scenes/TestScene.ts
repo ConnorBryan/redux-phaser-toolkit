@@ -4,6 +4,7 @@ import BaseScene from "./BaseScene";
 
 export default class TestScene extends BaseScene {
   stage!: Phaser.GameObjects.GameObject;
+  player!: Phaser.GameObjects.GameObject;
 
   constructor() {
     super({
@@ -18,10 +19,11 @@ export default class TestScene extends BaseScene {
   create() {
     this.createBackground();
     this.createStage();
+    this.createPlayer();
+    this.enableCollisions();
   }
 
-  //
-
+  // #region Create
   createBackground() {
     this.add.image(0, 0, IMAGE_KEYS.Background).setOrigin(0, 0);
   }
@@ -31,12 +33,28 @@ export default class TestScene extends BaseScene {
       this.store.getState()
     );
     const leftPadding = (this.scale.width - width) / 2;
-
     const stageRectangle = this.add
       .rectangle(leftPadding, 521, width, height, COLOR_KEYS.Black)
       .setOrigin(0, 0);
 
     this.stage = this.physics.add.existing(stageRectangle);
-    (this.stage.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
+    this.stage.body = this.stage.body as Phaser.Physics.Arcade.Body;
+
+    this.stage.body.setAllowGravity(false).setImmovable(true);
+  }
+
+  createPlayer() {
+    const { x, y } = selectors.getPlayerPosition(this.currentState);
+    const { width, height } = selectors.getPlayerScale(this.currentState);
+    const color = selectors.getPlayerColor(this.currentState);
+    const playerRectangle = this.add.rectangle(x, y, width, height, color);
+
+    this.player = this.physics.add.existing(playerRectangle);
+    this.player.body = this.player.body as Phaser.Physics.Arcade.Body;
+  }
+  // #endregion
+
+  enableCollisions() {
+    this.physics.add.collider(this.player, this.stage);
   }
 }
