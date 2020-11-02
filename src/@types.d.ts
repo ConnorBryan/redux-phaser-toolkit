@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 declare namespace Geodancer {
-  type SettingsSetter = {
-    path: string | string[];
-    value: any;
+  type Settings = {
+    playerSpeed: number;
   };
 
   type Direction = "left" | "right";
@@ -24,6 +23,7 @@ declare namespace Geodancer {
     lives: number;
     movement: {
       direction: null | Direction;
+      speed: number;
       velocity: {
         x: number;
         y: number;
@@ -32,6 +32,8 @@ declare namespace Geodancer {
   }
 
   namespace Actions {
+    type DebugMenuChanged = { key: keyof Geodancer.Settings; value: any };
+
     type PlayerMoved = {
       id: string;
       direction: Direction;

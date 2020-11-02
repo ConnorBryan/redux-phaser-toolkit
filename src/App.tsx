@@ -1,18 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import { Provider } from "react-redux";
 import { DebugManager, GameContainer } from "components";
 import { createStore } from "store";
 
 export default function App() {
-  const store = useRef<any>();
-  const [ready, setReady] = useState(false);
+  const store = useRef(createStore());
 
-  useEffect(() => {
-    store.current = createStore();
-    setReady(true);
-  }, []);
-
-  return ready ? (
+  return (
     <Provider store={store.current}>
       <div
         style={{
@@ -24,5 +18,5 @@ export default function App() {
         <DebugManager />
       </div>
     </Provider>
-  ) : null;
+  );
 }
