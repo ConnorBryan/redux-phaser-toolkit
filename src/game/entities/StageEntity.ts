@@ -4,6 +4,8 @@ import { stageSelectors } from "store";
 import BaseEntity from "./BaseEntity";
 
 export default class StageEntity extends BaseEntity<Geodancer.Entity> {
+  rectangle!: Phaser.GameObjects.GameObject;
+
   constructor(scene: Phaser.Scene, id: string) {
     super({
       scene,
@@ -17,15 +19,20 @@ export default class StageEntity extends BaseEntity<Geodancer.Entity> {
       position: { y },
       color,
     } = stageSelectors.selectById(this.gameState, id)!;
-
     const leftPadding = (this.scene.scale.width - width) / 2;
-    const rectangle = this.scene.add
+
+    this.rectangle = this.scene.add
       .rectangle(leftPadding, y, width, height, color)
       .setOrigin(0, 0);
 
-    this.scene.physics.add.existing(rectangle);
+    this.scene.physics.add.existing(this.rectangle);
 
-    this.body = rectangle.body as Phaser.Physics.Arcade.Body;
+    this.body = this.rectangle.body as Phaser.Physics.Arcade.Body;
     this.body.setAllowGravity(false).setImmovable(true);
+  }
+
+  destroy() {
+    super.destroy();
+    this.rectangle.destroy();
   }
 }

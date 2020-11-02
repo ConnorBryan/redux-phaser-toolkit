@@ -4,6 +4,8 @@ import BaseEntity from "./BaseEntity";
 import { playerSelectors } from "store";
 
 export default class PlayerEntity extends BaseEntity<Geodancer.Entity> {
+  rectangle!: Phaser.GameObjects.GameObject;
+
   constructor(scene: Phaser.Scene, id: string) {
     super({
       scene,
@@ -18,10 +20,15 @@ export default class PlayerEntity extends BaseEntity<Geodancer.Entity> {
       color,
     } = playerSelectors.selectById(this.gameState, id)!;
 
-    const rectangle = this.scene.add.rectangle(x, y, width, height, color);
+    this.rectangle = this.scene.add.rectangle(x, y, width, height, color);
 
-    this.scene.physics.add.existing(rectangle);
+    this.scene.physics.add.existing(this.rectangle);
 
-    this.body = rectangle.body as Phaser.Physics.Arcade.Body;
+    this.body = this.rectangle.body as Phaser.Physics.Arcade.Body;
+  }
+
+  destroy() {
+    super.destroy();
+    this.rectangle.destroy();
   }
 }

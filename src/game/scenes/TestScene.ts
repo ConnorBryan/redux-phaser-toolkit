@@ -25,6 +25,7 @@ export default class TestScene extends BaseScene {
   }
 
   update() {
+    // Stages
     stageSelectors.selectAll(this.currentState).forEach((stage) => {
       if (!this.stageIds[stage.id]) {
         this.stageIds[stage.id] = true;
@@ -32,12 +33,29 @@ export default class TestScene extends BaseScene {
       }
     });
 
+    Object.keys(this.stageIds).forEach((id) => {
+      if (!stageSelectors.selectById(this.currentState, id)) {
+        this.stages.find((stage) => stage.id === id)?.destroy();
+        delete this.stageIds[id];
+        this.stages = this.stages.filter((stage) => stage.id !== id);
+      }
+    });
+
+    // Players
     playerSelectors.selectAll(this.currentState).forEach((player) => {
       if (!this.playerIds[player.id]) {
         this.playerIds[player.id] = true;
         const playerEntity = new PlayerEntity(this, player.id);
         this.players.push(playerEntity);
         this.physics.add.collider(playerEntity, this.stages);
+      }
+    });
+
+    Object.keys(this.playerIds).forEach((id) => {
+      if (!playerSelectors.selectById(this.currentState, id)) {
+        this.players.find((player) => player.id === id)?.destroy();
+        delete this.playerIds[id];
+        this.players = this.players.filter((player) => player.id !== id);
       }
     });
   }

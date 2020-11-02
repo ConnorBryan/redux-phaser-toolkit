@@ -1,4 +1,8 @@
-import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
+import {
+  createEntityAdapter,
+  createSlice,
+  PayloadAction,
+} from "@reduxjs/toolkit";
 import { COLOR_KEYS, ENTITY_KEYS } from "keys";
 import { gameStarted } from "store/actions";
 import { RootState } from "store/create-store";
@@ -8,7 +12,11 @@ const stageAdapter = createEntityAdapter<Geodancer.Entity>();
 export default createSlice({
   name: ENTITY_KEYS.Stage,
   initialState: stageAdapter.getInitialState(),
-  reducers: {},
+  reducers: {
+    removeStage(state, action: PayloadAction<string>) {
+      stageAdapter.removeOne(state, action.payload);
+    },
+  },
   extraReducers: (builder) =>
     builder.addCase(gameStarted.type, (state) => {
       stageAdapter.addOne(state, {

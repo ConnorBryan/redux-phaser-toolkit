@@ -1,5 +1,9 @@
 import Phaser from "phaser";
-import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
+import {
+  createEntityAdapter,
+  createSlice,
+  PayloadAction,
+} from "@reduxjs/toolkit";
 import { gameStarted } from "../actions";
 import { RootState } from "../create-store";
 import { COLOR_KEYS, ENTITY_KEYS } from "keys";
@@ -10,7 +14,11 @@ const playerAdapter = createEntityAdapter<Geodancer.Player>();
 export default createSlice({
   name: ENTITY_KEYS.Player,
   initialState: playerAdapter.getInitialState(),
-  reducers: {},
+  reducers: {
+    removePlayer(state, action: PayloadAction<string>) {
+      playerAdapter.removeOne(state, action.payload);
+    },
+  },
   extraReducers: (builder) =>
     builder.addCase(gameStarted.type, (state) => {
       playerAdapter.addOne(state, {
