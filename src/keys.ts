@@ -4,7 +4,9 @@ export const SYSTEM_KEYS = {
   Store: "store",
 };
 
-export const SCENE_KEYS = {};
+export const SCENE_KEYS = {
+  Test: "test",
+};
 
 export const ENTITY_KEYS = {};
 
@@ -19,3 +21,7 @@ export const ACTION_KEYS = {
 export const EVENT_KEYS = {};
 
 export const COLOR_KEYS = {};
+
+export const IMAGE_KEYS = {
+  Background: "background",
+};
