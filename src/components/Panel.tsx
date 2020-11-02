@@ -9,6 +9,7 @@ export default function Panel(props: Props) {
   return (
     <fieldset
       style={{
+        position: "relative",
         padding: 10,
       }}
     >
