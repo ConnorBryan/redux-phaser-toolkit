@@ -17,6 +17,14 @@ export default class BaseEntity<T> extends Phaser.GameObjects.GameObject {
   store!: ConfiguredStore;
   selectors?: EntitySelectors<T, RootState>;
 
+  get gameState() {
+    return this.store.getState();
+  }
+
+  get ownData() {
+    return this.selectors?.selectById(this.gameState, this.id);
+  }
+
   constructor({ scene, key, id, selectors }: EntityConfig<T>) {
     super(scene, key);
     const { store } = scene.plugins.get(SYSTEM_KEYS.Store) as StorePlugin;
@@ -25,11 +33,5 @@ export default class BaseEntity<T> extends Phaser.GameObjects.GameObject {
     this.id = id;
     this.store = store;
     this.selectors = selectors;
-  }
-
-  getOwnData() {
-    const data = this.selectors?.selectById(this.store.getState(), this.id);
-
-    console.log(`Data for ${this.kind}#${this.id}`, data);
   }
 }

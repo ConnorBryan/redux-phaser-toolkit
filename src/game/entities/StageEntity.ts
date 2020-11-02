@@ -16,7 +16,7 @@ export default class StageEntity extends BaseEntity<Geodancer.Entity> {
       scale: { width, height },
       position: { y },
       color,
-    } = stageSelectors.selectById(this.store.getState(), id)!;
+    } = stageSelectors.selectById(this.gameState, id)!;
 
     const leftPadding = (this.scene.scale.width - width) / 2;
     const rectangle = this.scene.add

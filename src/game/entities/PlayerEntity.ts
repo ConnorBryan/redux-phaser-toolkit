@@ -16,7 +16,7 @@ export default class PlayerEntity extends BaseEntity<Geodancer.Entity> {
       scale: { width, height },
       position: { x, y },
       color,
-    } = playerSelectors.selectById(this.store.getState(), id)!;
+    } = playerSelectors.selectById(this.gameState, id)!;
 
     const rectangle = this.scene.add.rectangle(x, y, width, height, color);
 
