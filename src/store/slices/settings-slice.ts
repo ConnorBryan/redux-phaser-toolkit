@@ -5,12 +5,7 @@ import { debugMenuUpdated } from "../actions";
 
 export default createSlice({
   name: REDUCER_KEYS.Settings,
-  initialState: {
-    stage: {
-      width: 0.75,
-      height: 0.05,
-    },
-  },
+  initialState: {},
   reducers: {},
   extraReducers: (builder) =>
     builder.addCase(

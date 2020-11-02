@@ -1,4 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
+import { RootState } from "store";
 import { COLOR_KEYS, ENTITY_KEYS } from "keys";
 
 export default createSlice({
@@ -16,3 +17,20 @@ export default createSlice({
   },
   reducers: {},
 });
+
+export const getPlayer = (state: RootState) => state.player;
+
+export const getPlayerScale = createSelector(
+  getPlayer,
+  (player) => player.scale
+);
+
+export const getPlayerPosition = createSelector(
+  getPlayer,
+  (player) => player.position
+);
+
+export const getPlayerColor = createSelector(
+  getPlayer,
+  (player) => player.color
+);

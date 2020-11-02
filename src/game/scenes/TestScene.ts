@@ -29,9 +29,7 @@ export default class TestScene extends BaseScene {
   }
 
   createStage() {
-    const { width, height } = selectors.getStageDimensionsInPixels(
-      this.store.getState()
-    );
+    const { width, height } = selectors.getStageScale(this.store.getState());
     const leftPadding = (this.scale.width - width) / 2;
     const stageRectangle = this.add
       .rectangle(leftPadding, 521, width, height, COLOR_KEYS.Black)

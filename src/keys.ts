@@ -8,6 +8,7 @@ export const SCENE_KEYS = {
 
 export const ENTITY_KEYS = {
   Player: "player",
+  Stage: "stage",
 };
 
 export const REDUCER_KEYS = {
