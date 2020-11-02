@@ -76,10 +76,12 @@ export default class PlayerEntity extends BaseEntity<Geodancer.Entity> {
   }
 
   stop() {
-    const { movement } = this.getState();
+    try {
+      const { movement } = this.getState();
 
-    if (movement.direction) {
-      this.store.dispatch(playerSlice.actions.playerStopped(this.id));
-    }
+      if (movement.direction) {
+        this.store.dispatch(playerSlice.actions.playerStopped(this.id));
+      }
+    } catch {}
   }
 }

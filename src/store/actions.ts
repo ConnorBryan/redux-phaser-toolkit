@@ -5,7 +5,6 @@ export const debugMenuUpdated = createAction(
   ACTION_KEYS.DebugMenuUpdated,
   (key: string, value: any) => ({
     payload: { key, value },
-    value,
   })
 );
 

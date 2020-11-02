@@ -19,7 +19,7 @@ export default createSlice({
   name: ENTITY_KEYS.Player,
   initialState: playerAdapter.getInitialState(),
   reducers: {
-    removePlayer(state, action: PayloadAction<string>) {
+    playerRemoved(state, action: PayloadAction<string>) {
       playerAdapter.removeOne(state, action.payload);
     },
     playerMoved(state, action: PayloadAction<Geodancer.Actions.PlayerMoved>) {
@@ -46,7 +46,7 @@ export default createSlice({
       .addCase(gameStarted.type, (state) => {
         const createDefaultPlayer = (
           overrides: Partial<Geodancer.Player> = {}
-        ) => ({
+        ): Geodancer.Player => ({
           id: Phaser.Math.RND.uuid(),
           lives: INITIAL_PLAYER_EXTRA_LIVES,
           scale: {

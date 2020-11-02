@@ -1,7 +1,7 @@
 import { OutputSelector } from "@reduxjs/toolkit";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { actions, RootState } from "store";
+import { actions, RootState, SettingsKey } from "store";
 
 interface Props
   extends React.DetailedHTMLProps<
@@ -9,7 +9,7 @@ interface Props
     HTMLInputElement
   > {
   label: string;
-  settingKey: string;
+  settingKey: SettingsKey;
   selector: OutputSelector<RootState, any, any>;
 }
 

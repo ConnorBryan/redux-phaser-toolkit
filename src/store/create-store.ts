@@ -13,8 +13,10 @@ function createStore() {
 }
 
 const exampleStore = createStore();
+const { settings } = exampleStore.getState();
 
 export type ConfiguredStore = ReturnType<typeof createStore>;
 export type RootState = ReturnType<typeof exampleStore.getState>;
+export type SettingsKey = keyof typeof settings;
 
 export default createStore;
