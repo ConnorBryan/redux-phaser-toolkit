@@ -20,8 +20,6 @@ export const ACTION_KEYS = {
   GameStarted: "gameStarted",
 };
 
-export const EVENT_KEYS = {};
-
 export const COLOR_KEYS = {
   Black: 0x000000,
   Red: 0xff0000,
